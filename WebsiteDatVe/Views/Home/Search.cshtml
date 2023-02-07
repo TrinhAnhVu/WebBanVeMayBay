@@ -1,0 +1,128 @@
+﻿@model List<WebsiteDatVe.Models.ChuyenBay>
+
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="search-result">
+    @{
+        WebsiteDatVe.Models.ThongTinDatVe thongtin = (WebsiteDatVe.Models.ThongTinDatVe)Session["ThongTinDatVe"];
+        <div class="search-info">
+            <div class="content">
+                <h3>@ViewBag.DiemDi → @ViewBag.DiemDen</h3>
+                <p><span>@thongtin.NgayDi.ToString("dd/M/yyyy")</span>  |  <span>@ViewBag.SoLuong hành khách</span>  |  <span>@thongtin.HangGhe</span></p>
+            </div>
+            <div class="button">
+                <button><i class="fas fa-search"></i>Đổi tìm kiếm</button>
+            </div>
+        </div>
+    }
+
+
+    <div class="search-filter">
+        <h4>Bộ lọc</h4>
+        <div class="item">Thời gian bay <i class="fas fa-sort-down"></i></div>
+        <div class="item">Hãng hàng không <i class="fas fa-sort-down"></i></div>
+
+    </div>
+
+    @if (Model.Count == 0)
+    {
+        <div class="empty">
+            <img src="~/Assets/images/inbox.png" />
+            <p>Không tìm thấy chuyến bay phù hợp</p>
+        </div>
+
+    }
+    <div class="ticket-container-search">
+        @foreach (var item in Model)
+        {
+            <div class="ticket">
+                <div class="ticket-content">
+                    <div class="left">
+                        <img src="~/Assets/@item.MayBay.HangBay.Logo" />
+                    </div>
+                    <div class="center">
+                        <div class="center-item">
+                            <h3>@item.ThoiGianDi.GetValueOrDefault().ToString("HH:mm")</h3>
+                            <span>@ViewBag.DiemDi</span>
+                        </div>
+                        <div class="center-item">
+                            <p>--- <i class="fas fa-plane"></i> ---</p>
+                            <span>@item.ThoiGianDen.GetValueOrDefault().Subtract(item.ThoiGianDi.GetValueOrDefault()).TotalHours giờ</span>
+                        </div>
+                        <div class="center-item">
+                            <h3>@item.ThoiGianDen.GetValueOrDefault().ToString("HH:mm")</h3>
+                            <span>@ViewBag.DiemDen</span>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="icon"><i class="far fa-bookmark" id="@item.MaChuyenBay"></i></div>
+
+
+                        @if (ViewBag.NgaySearch > 5)
+                        {
+                            <h3>@((item.Gia.GetValueOrDefault(0) ).ToString("N0")) VNĐ / khách</h3>
+                            <button id="@item.MaChuyenBay" name="btnChonVe" class="@item.Gia">Chọn vé</button>
+                        }
+                        else if (ViewBag.NgaySearch > 2)
+                        {
+                            <h3>@((item.Gia.GetValueOrDefault(0) *1.3).ToString("N0")) VNĐ / khách</h3>
+                            <button id="@item.MaChuyenBay" name="btnChonVe" class="@(item.Gia*1.3)">Chọn vé</button>
+                        }
+                        else
+                        {
+                            <h3>@((item.Gia.GetValueOrDefault(0) * 1.5).ToString("N0")) VNĐ / khách</h3>
+                            <button id="@item.MaChuyenBay" name="btnChonVe" class="@(item.Gia*1.5)">Chọn vé</button>
+
+                        }
+
+
+                    </div>
+                </div>
+                <div class="ticket-option">
+                    <p>Chi tiết chuyến bay</p>
+                    <p>Chi tiết vé</p>
+                </div>
+            </div>
+        }
+    </div>
+
+
+</div>
+
+
+
+@section scripts{
+    <script>
+
+
+
+
+        $("button[name='btnChonVe']").click(function () {
+            if ($('#session').val() == 0) {
+                $('.sign-in').addClass('show')
+            } else {
+                window.location = "/Booking/Checkout/?id=" + this.id + "&giave=" + this.className + "&idKhuHoi=null&giaveKhuHoi=" + 0
+            }
+        })
+
+        $(".fa-bookmark").click(function () {
+            $.ajax({
+                type: 'post',
+                url: '/User/SavedTicket ',
+                data: {
+                    id: this.id,
+                },
+                success: function (data) {
+                    if (data.code == 200) {
+                        alert("Lưu vé thành công. Bạn có thể vào mực đã lưu để xem chi tiết.");
+                    }
+                }
+
+            });
+        })
+    </script>
+}
+

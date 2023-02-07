@@ -1,0 +1,467 @@
+﻿
+@{
+    ViewBag.Title = "Checkout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    WebsiteDatVe.Models.ThongTinDatVe thongtin = (WebsiteDatVe.Models.ThongTinDatVe)Session["ThongTinDatVe"];
+    <div class="booking-wrap">
+
+        <div class="booking">
+            <div class="booking-info">
+
+                <div id="frmheader">
+                    <div class="booking-header">
+                        <h3>@ViewBag.DiemDi → @ViewBag.DiemDen</h3>
+                        <p><span>@thongtin.NgayDi.ToString("dd/MM/yyyy")</span>  |  <span>@ViewBag.SoLuong hành khách</span>  |  <span>@thongtin.HangGhe</span></p>
+                    </div>
+                </div>
+                @*<div class="container-package">
+                    <div class="booking-package">
+
+                        <i class="fas fa-couch"></i>
+                        <div class="form-group-package" id="frmLoaiHanhLi">
+                            <div class="passengers" style="margin-left:14px;">
+                                <p class="title" style="margin-top:1rem;">Hành lí</p>
+                                <p id="LoaiHanhLi">Xách tay</p>
+                            </div>
+                            <div class="passengers">
+                                <div class="arrow" style="float: right">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="combobox" id="cbbHanhLi">
+                            <div class="item sheet">
+                                Xách tay (>= 5kg)
+                            </div>
+                            <div class="item sheet">
+                                Hành lí >= 10kg
+                            </div>
+                            <div class="item sheet">
+                                Hành lí >= 12kg
+                            </div><div class="item sheet">
+                                Hành lí >= 18kg
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+                <div class="title">
+                    <span>Thông tin liên hệ</span>
+                </div>
+                <div class="form-info">
+                    <p class="title">Thông tin liên hệ</p>
+                    <div class="form-container">
+                        <div class="control">
+                            <p>Họ</p>
+                            <input type="text" id="ho" value="" required />
+                        </div>
+                        <div class="control">
+                            <p>Tên đệm & Tên</p>
+                            <input type="text" id="ten" value="" />
+                        </div>
+                        <div class="control">
+                            <p>Số điện thoại di động</p>
+                            <input type="tel" id="sdt" value="" />
+                        </div>
+                        <div class="control">
+                            <p>Email</p>
+                            <input type="email" id="email" value="" />
+                        </div>
+                    </div>
+                </div>
+                <p class="title">Thông tin hành khách</p>
+                @for (int i = 1; i <= thongtin.NguoiLon; i++)
+                {
+                    <div class="form-info adult">
+                        <p class="title">Người lớn @i</p>
+                        <div class="form-container">
+                            <div class="control">
+                                <p>Họ</p>
+                                <input type="text" name="txtHo" />
+                            </div>
+                            <div class="control">
+                                <p>Tên đệm & Tên</p>
+                                <input type="text" name="txtTen" />
+                            </div>
+                            <div class="control">
+                                <p>Số điện thoại di động</p>
+                                <input type="tel" name="txtSDT" />
+                            </div>
+                            <div class="control">
+                                <p>Ngày sinh</p>
+                                <input type="text" name="txtNgaySinh" />
+                            </div>
+                            <div class="control">
+                                <p>CMND/CCCD</p>
+                                <input type="number" name="txtCMND" />
+                            </div>
+                            <div class="control">
+                                <p>Quốc tịch</p>
+                                <input type="text" name="txtQuocTich" />
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @if (thongtin.TreEm > 0)
+                {
+                    for (int i = 1; i <= thongtin.TreEm; i++)
+                    {
+                        <div class="form-info child">
+                            <p class="title">Trẻ em @i</p>
+                            <div class="form-container">
+                                <div class="control">
+                                    <p>Họ</p>
+                                    <input type="text" name="txtHo" />
+                                </div>
+                                <div class="control">
+                                    <p>Tên đệm & Tên</p>
+                                    <input type="text" name="txtTen" />
+                                </div>
+                                <div class="control">
+                                    <p>Ngày sinh</p>
+                                    <input type="text" name="txtNgaySinh" />
+                                </div>
+                                <div class="control">
+                                    <p>Quốc tịch</p>
+                                    <input type="text" name="txtQuocTich" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                @if (thongtin.EmBe > 0)
+                {
+                    for (int i = 1; i <= thongtin.EmBe; i++)
+                    {
+                        <div class="form-info baby">
+                            <p class="title">Em bé @i</p>
+                            <div class="form-container">
+                                <div class="control">
+                                    <p>Họ</p>
+                                    <input type="text" name="txtHo" />
+                                </div>
+                                <div class="control">
+                                    <p>Tên đệm & Tên</p>
+                                    <input type="text" name="txtTen" />
+                                </div>
+                                <div class="control">
+                                    <p>Ngày sinh</p>
+                                    <input type="text" name="txtNgaySinh" />
+                                </div>
+                                <div class="control">
+                                    <p>Quốc tịch</p>
+                                    <input type="text" name="txtQuocTich" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
+
+
+            <p class="title">Phương thức thanh toán (Vui lòng chọn hình thức thanh toán)</p>
+                
+                <div class="form-method">
+                    <div class="method-payment momo">
+                        <img src="~/Assets/images/MoMo_Logo.png" />
+                        <span>Ví điện tử momo</span>
+                    </div>
+                    <div class="method-payment vnpay">
+                        <img src="~/Assets/images/bank-card.png" />
+                        <span>Thẻ ngân hàng</span>
+                    </div>
+                </div>
+
+                <div class="form-submit">
+                    <button class="btn-primary" id="btnPayment">THANH TOÁN</button>
+                </div>
+            </div>
+            <div class="form-checkout" style="width: 40%">
+                <div class="form-checkout-container">
+                    <div class="row">
+                        <span>VietJet Air (Người lớn) x @thongtin.NguoiLon</span>
+                        <span>@ViewBag.GiaVeNguoiLon.ToString("N0") VND</span>
+                    </div>
+                    @{
+                        if (thongtin.TreEm > 0)
+                        {
+                            <div class="row">
+                                <span>VietJet Air (Trẻ em) x @thongtin.TreEm</span>
+                                <span>@ViewBag.GiaVeTreEm.ToString("N0") VND</span>
+                            </div>
+                        }
+                    }
+                    @{
+                        if (thongtin.EmBe > 0)
+                        {
+                            <div class="row">
+                                <span>VietJet Air (Em bé) x @thongtin.EmBe</span>
+                                <span>@ViewBag.GiaVeEmBe.ToString("N0") VND</span>
+                            </div>
+                        }
+                    }
+
+                    <div class="row">
+                        <span>Hành lí</span>
+                        <span>@ViewBag.HanhLi.ToString("N0") VND</span>
+                    </div>
+
+                    <div class="row">
+                        <span>Tổng tạm tính</span>
+                        <span>@ViewBag.TongTamTinh.ToString("N0") VND</span>
+                    </div>
+                    <div class="row line">
+                        <span>Thuế & phí (10%)</span>
+                        <span>@ViewBag.Thue.ToString("N0") VND</span>
+                    </div>
+                    <div class="row total">
+                        <span>Tổng cộng</span>
+                        <span>@ViewBag.TongCong.ToString("N0") VND</span>
+                    </div>
+                </div>
+            </div>
+            <input id="txtTongTien" value="@ViewBag.TongCong" hidden />
+            <input id="txtMaChuyenBay" value="@ViewBag.MaChuyenBay1" hidden />
+            <input id="txtMaChuyenBayKH" value="@ViewBag.MaChuyenBay2" hidden />
+        </div>
+    </div>
+}
+
+
+@section scripts{
+    <script>
+
+
+        $("#frmLoaiHanhLi").click(function () {
+            /*alert("Thanh cong")*/
+            document.getElementById("cbbHanhLi").style.display = "block"
+            $("#cbbHanhLi").addClass("active");
+        })
+
+        $('.sheet').click(function () {
+            document.getElementById("cbbHanhLi").style.display = "none"
+            $('#LoaiHanhLi').html($(this).html())
+        })
+
+        $(document).ready(function () {
+            if ($('#txtMaChuyenBayKH').val().length) {
+
+                let div = `<div class="booking-header" style="margin-top:2rem">
+                        <h3>@ViewBag.DiemDen → @ViewBag.DiemDi</h3>
+                        <p><span>@thongtin.NgayVe.ToString("dd/MM/yyyy")</span>  |  <span>@ViewBag.SoLuong hành khách</span>  |  <span>@thongtin.HangGhe</span></p>
+                    </div>`;
+                $('#frmheader').append(div)
+            }
+        })
+
+        var arrCus = [];
+
+        function CreateArray() {
+            $.each($('.adult'), function (k, v) {
+                arrCus.push({
+                    Ho: $(this).find('input[name="txtHo"]').val(),
+                    Ten: $(this).find('input[name="txtTen"]').val(),
+                    SDT: $(this).find('input[name="txtSDT"]').val(),
+                    NgaySinh: $(this).find('input[name="txtNgaySinh"]').val(),
+                    CMND: $(this).find('input[name="txtCMND"]').val(),
+                    QuocTich: $(this).find('input[name="txtQuocTich"]').val(),
+                    LoaiKhachHang: "Người lớn"
+                })
+            })
+
+            $.each($('.child'), function (k, v) {
+                arrCus.push({
+                    Ho: $(this).find('input[name="txtHo"]').val(),
+                    Ten: $(this).find('input[name="txtTen"]').val(),
+                    SDT: null,
+                    NgaySinh: $(this).find('input[name="txtNgaySinh"]').val(),
+                    CMND: null,
+                    QuocTich: $(this).find('input[name="txtQuocTich"]').val(),
+                    LoaiKhachHang: "Trẻ Em"
+                })
+            })
+
+            $.each($('.baby'), function (k, v) {
+                arrCus.push({
+                    Ho: $(this).find('input[name="txtHo"]').val(),
+                    Ten: $(this).find('input[name="txtTen"]').val(),
+                    SDT: null,
+                    NgaySinh: $(this).find('input[name="txtNgaySinh"]').val(),
+                    CMND: null,
+                    QuocTich: $(this).find('input[name="txtQuocTich"]').val(),
+                    LoaiKhachHang: "Em bé"
+                })
+            })
+        }
+
+        //$('#btnPayment').click(function () {
+        //    $('#btnPayment').prop("disabled", true);
+        //    //list khách hàng
+        //    CreateArray();
+
+        //    //Người đặt vé
+        //    const obj = {
+        //        Ho: $("#ho").val(),
+        //        Ten: $("#ten").val(),
+        //        SDT: $("#sdt").val(),
+        //        Email: $("#email").val()
+        //    }
+
+        //    if ($('#txtMaChuyenBayKH').val().length) {
+        //        $.ajax({
+        //            type: 'post',
+        //            url: '/Booking/TaoVe',
+        //            data: {
+        //                arr: JSON.stringify(arrCus),
+        //                nguoidat: JSON.stringify(obj),
+        //                machuyenbay1: $('#txtMaChuyenBay').val(),
+        //                machuyenbay2: $('#txtMaChuyenBayKH').val()
+        //            },
+        //            success: function (data) {
+        //                if (data.code == 200) {
+        //                    alert('successul')
+        //                    window.location = "/Booking/ThanhToanMomo"
+        //                    //window.location = "/Booking/Payment"
+        //                }
+        //            }
+        //        })
+        //    } else {
+        //        $.ajax({
+        //            type: 'post',
+        //            url: '/Booking/TaoVe',
+        //            data: {
+        //                arr: JSON.stringify(arrCus),
+        //                nguoidat: JSON.stringify(obj),
+        //                machuyenbay1: $('#txtMaChuyenBay').val(),
+        //                machuyenbay2: null
+        //            },
+        //            success: function (data) {
+        //                if (data.code == 200) {
+        //                    alert('successul')
+        //                    window.location = "/Booking/ThanhToanMomo"
+        //                    //window.location = "/Booking/Payment"
+        //                }
+        //            }
+        //        })
+        //    }
+        //})
+
+        $(".vnpay").click(function () {
+            $(".vnpay").toggleClass("active");
+            $('.momo').removeClass('active')
+
+            $('#btnPayment').click(function () {
+                $('#btnPayment').prop("disabled", true);
+                //list khách hàng
+                CreateArray();
+
+                //Người đặt vé
+                const obj = {
+                    Ho: $("#ho").val(),
+                    Ten: $("#ten").val(),
+                    SDT: $("#sdt").val(),
+                    Email: $("#email").val()
+                }
+
+                if ($('#txtMaChuyenBayKH').val().length) {
+                    $.ajax({
+                        type: 'post',
+                        url: '/Booking/TaoVe',
+                        data: {
+                            arr: JSON.stringify(arrCus),
+                            nguoidat: JSON.stringify(obj),
+                            machuyenbay1: $('#txtMaChuyenBay').val(),
+                            machuyenbay2: $('#txtMaChuyenBayKH').val()
+                        },
+                        success: function (data) {
+                            if (data.code == 200) {
+                                alert('successul')
+                                /*window.location = "/Booking/ThanhToanMomo"*/
+                                window.location = "/Booking/Payment"
+                            }
+                        }
+                    })
+                } else {
+                    $.ajax({
+                        type: 'post',
+                        url: '/Booking/TaoVe',
+                        data: {
+                            arr: JSON.stringify(arrCus),
+                            nguoidat: JSON.stringify(obj),
+                            machuyenbay1: $('#txtMaChuyenBay').val(),
+                            machuyenbay2: null
+                        },
+                        success: function (data) {
+                            if (data.code == 200) {
+                                alert('successul')
+                                //window.location = "/Booking/ThanhToanMomo"
+                                window.location = "/Booking/Payment"
+                            }
+                        }
+                    })
+                }
+            })
+        })
+
+        $(".momo").click(function () {
+            $(".momo").toggleClass("active");
+            $('.vnpay').removeClass('active')
+
+            $('#btnPayment').click(function () {
+                $('#btnPayment').prop("disabled", true);
+                //list khách hàng
+                CreateArray();
+
+                //Người đặt vé
+                const obj = {
+                    Ho: $("#ho").val(),
+                    Ten: $("#ten").val(),
+                    SDT: $("#sdt").val(),
+                    Email: $("#email").val()
+                }
+
+                if ($('#txtMaChuyenBayKH').val().length) {
+                    $.ajax({
+                        type: 'post',
+                        url: '/Booking/TaoVe',
+                        data: {
+                            arr: JSON.stringify(arrCus),
+                            nguoidat: JSON.stringify(obj),
+                            machuyenbay1: $('#txtMaChuyenBay').val(),
+                            machuyenbay2: $('#txtMaChuyenBayKH').val()
+                        },
+                        success: function (data) {
+                            if (data.code == 200) {
+                                alert('successul')
+                                window.location = "/Booking/ThanhToanMomo"
+                                //window.location = "/Booking/Payment"
+                            }
+                        }
+                    })
+                } else {
+                    $.ajax({
+                        type: 'post',
+                        url: '/Booking/TaoVe',
+                        data: {
+                            arr: JSON.stringify(arrCus),
+                            nguoidat: JSON.stringify(obj),
+                            machuyenbay1: $('#txtMaChuyenBay').val(),
+                            machuyenbay2: null
+                        },
+                        success: function (data) {
+                            if (data.code == 200) {
+                                alert('successul')
+                                window.location = "/Booking/ThanhToanMomo"
+                                //window.location = "/Booking/Payment"
+                            }
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+
+}

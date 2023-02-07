@@ -1,0 +1,332 @@
+﻿
+<div id="frmSignIn" class="sign-in">
+    <div class="container">
+        <div id="btnclose"><i class="fa fa-times"></i></div>
+        @*Đăng nhập*@
+        <div id="login-login">
+
+            <h3>ĐĂNG NHẬP</h3>
+            <input type="email" placeholder="Email" value="" id="txtEmail" />
+            <input type="password" placeholder="Mật khẩu" value="" id="txtPwd" />
+            <p id="txtMsg"></p>
+            <button class="btn-signin" id="btnSignin">ĐĂNG NHẬP</button>
+            <div>
+                <button id="btnforgetpass" onclick="forgetpass()"> Quên mật khẩu ?</button>
+
+            </div>
+            <div class="btn-social">
+                <button class="btn-fb"><a href="/User/loginFacebook" class="btn-social-net"><i class="fab fa-facebook-f"></i><span>Facebook</span></a></button>
+                <button class="btn-gg" onclick="logingg()"><i class="fab fa-google"></i>Google</button>
+            </div>
+            <p>Bạn chưa có tài khoản? <a onclick="CreateAcc()">Tạo tài khoản</a></p>
+        </div>
+
+        @*Quên mật khẩu*@
+        <div id="login-forget-pass">
+            <h3>QUÊN MẬT KHẨU</h3>
+            <input type="email" placeholder="Email" value="" id="txtEmailForget" />
+
+            <p id="txtMsgForget"></p>
+            <button class="btn-signin" onclick="btnFogetPass()">SUBMIT</button>
+
+        </div>
+
+        @*Tạo mới tài khoản*@
+        <div id="create-acc">
+            <h3>TẠO MỚI TÀI KHOẢN</h3>
+            <input type="email" placeholder="Email" value="" id="txtEmailCreate" />
+            <input type="password" placeholder="Mật khẩu" value="" id="txtPass" />
+            <input type="password" placeholder="Nhập lại mật khẩu" value="" id="txtPassAgain" />
+            <input type="text" placeholder="Họ tên" value="" id="txtName" />
+            <input type="number" placeholder="Số điện thoại" value="" id="txtPhone" />
+
+            <p id="txtMsgCreate"></p>
+            <button class="btn-signin" onclick="SubmitCreate()" id="btnCreateAcc">SUBMIT</button>
+
+        </div>
+
+        @*tạo mới mật khẩu*@
+        <div id="create-pass">
+            <h3>QUÊN MẬT KHẨU</h3>
+            <input type="text" placeholder="Code" value="" id="txtCode" />
+            <input type="password" placeholder="Mật khẩu" value="" id="txtNewPass" />
+            <input type="password" placeholder="Nhập lại mật khẩu" value="" id="txtNewPassAgain" />
+            <p id="txtMsgCreatePass"></p>
+            <button class="btn-signin" onclick="SubmitCreatePass()" id="btnCreatePass">SUBMIT</button>
+
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .btn-social-net {
+        color: #000;
+    }
+
+    #btnforgetpass {
+        background: no-repeat;
+    }
+
+    #btnforgetpass:hover {
+        cursor: pointer
+    }
+
+    #create-acc, #create-pass, #login-forget-pass {
+        display: none;
+    }
+
+    #btnforgetpass {
+        margin-left: 169px;
+        align-items: center;
+        color: red;
+    }
+</style>
+
+
+
+<script>
+
+    function forgetpass() {
+        document.getElementById("login-login").style.display = 'none';
+        document.getElementById("login-forget-pass").style.display = 'block';
+    }
+
+    $('#btnclose').click(function () {
+
+        document.getElementById("create-acc", "login-forget-pass", "create-pass").style.display = 'none';
+        document.getElementById("login-login").style.display = 'block';
+
+        $('.sign-in').removeClass('show')
+    })
+
+    function CreateAcc() {
+        document.getElementById("login-login").style.display = 'none';
+        document.getElementById("create-acc").style.display = 'block';
+    }
+
+    //create account
+    function SubmitCreate() {
+
+        if ($('#txtEmailCreate').val() == "" || $('#txtPass').val() == ""
+            || $('txtPassAgain').val() == "" || $('txtName').val() == ""
+            || $('txtPhone').val() == "") {
+            $("#txtMsgCreate").empty();
+            $("#txtMsgCreate").append("Vui lòng nhập đầy đủ thông tin!");
+
+        }
+        else if ($('#txtPass').val() !== $('#txtPassAgain').val()) {
+            $("#txtMsgCreate").empty();
+            $("#txtMsgCreate").append("Vui lòng nhập trùng mật khẩu!");
+
+        }
+        else {
+
+
+
+            $.ajax({
+                type: 'post',
+                url: '/User/CreateAcc',
+                data: {
+                    email: $('#txtEmail').val(),
+                    password: $('#txtPass').val(),
+                    name: $('#txtName').val(),
+                    phone: $('#txtPhone').val()
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data.code == 200) {
+                        console.log(data);
+                        if (data.thanhcong == true) {
+                            alert("Đăng ký thành công!");
+                            window.location = '/Home/Index'
+                        } else {
+                            $("#txtMsgCreate").empty();
+                            $("#txtMsgCreate").append("Email đã tồn tại vui lòng nhập một email mới!");
+                        }
+                    }
+                }
+            })
+
+        }
+    }
+
+    //quên mật khẩu
+    function btnFogetPass() {
+
+        if ($('#txtEmailForget').val() == "" ) {
+            $("#txtMsgForget").empty();
+            $("#txtMsgForget").append("Vui lòng nhập đầy đủ thông tin!");
+
+        } else {
+            $.ajax({
+                type: 'post',
+                url: '/User/ForgetPass',
+                data: {
+                    email: $('#txtEmailForget').val(),
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data.code == 200) {
+                        console.log(data);
+                        if (data.thanhcong == true) {
+                            alert("Gửi mail thành công!");
+                            document.getElementById("login-forget-pass").style.display = 'none';
+                            document.getElementById("create-pass").style.display = 'block';
+                        } else {
+                            $("#txtMsgCreate").empty();
+                            $("#txtMsgCreate").append("Email không tồn tại hoặc bạn chưa tồn tại tài khoản chưa mail này!");
+                        }
+                    }
+                }
+            })
+
+        }
+    }
+
+    //Tạo mới mật khẩu
+    function SubmitCreatePass() {
+
+        if ($('#txtCode').val() == "" || $('#txtNewPass').val() == "" || $('#txtNewPassAgain').val() == ""  ) {
+            $("#txtMsgCreatePass").empty();
+            $("#txtMsgCreatePass").append("Vui lòng nhập đầy đủ thông tin!");
+
+        }
+        else if ($('#txtNewPass').val() !== $('#txtNewPassAgain').val()) {
+            $("#txtMsgCreatePass").empty();
+            $("#txtMsgCreatePass").append("Vui lòng nhập trùng mật khẩu!");
+
+        }
+        else {
+            
+            $.ajax({
+                type: 'post',
+                url: '/User/CreateNewPass',
+                data: {
+                    code: $('#txtCode').val(),
+                    password: $('#txtNewPass').val(),
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data.code == 200) {
+                        console.log(data);
+                        if (data.thanhcong == true) {
+                            alert("Thay đổi mật khẩu thành công!");
+                            document.getElementById("create-pass", "create-acc", "login-forget-pass" ).style.display = 'none';
+                            document.getElementById("login-login").style.display = 'block';
+                            $('.sign-in').removeClass('show')
+                        } else {
+                            $("#txtMsgCreatePass").empty();
+                            $("#txtMsgCreatePass").append("Thay đổi tài khoản thất bại!");
+                        }
+                    }
+                }
+            })
+
+        }
+    }
+
+
+    //login google
+    var OAUTHURL = 'https://accounts.google.com/o/oauth2/auth?';
+    var VALIDURL = 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=';
+    var SCOPE = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
+    var CLIENTID = '771768654051-979as548sj3bvght63o6qh9glhttnhl7.apps.googleusercontent.com';
+    var REDIRECT = 'https://localhost:44309/';
+    var LOGOUT = 'https://localhost:44309/Home/Index';
+    var TYPE = 'token';
+    var _url = OAUTHURL + 'scope=' + SCOPE + '&client_id=' + CLIENTID + '&redirect_uri=' + REDIRECT + '&response_type=' + TYPE;
+    var acToken;
+    var tokenType;
+    var expiresIn;
+    var user;
+    var loggedIn = false;
+
+    function logingg() {
+
+
+        var win = window.open(_url, "windowname1", 'width=800, height=600');
+        var pollTimer = window.setInterval(function () {
+            try {
+                console.log(win.document.URL);
+                if (win.document.URL.indexOf(REDIRECT) != -1) {
+                    window.clearInterval(pollTimer);
+                    var url = win.document.URL;
+                    acToken = gup(url, 'access_token');
+                    tokenType = gup(url, 'token_type');
+                    expiresIn = gup(url, 'expires_in');
+
+                    win.close();
+                    debugger;
+                    validateToken(acToken);
+                }
+            }
+            catch (e) {
+
+            }
+        }, 500);
+    }
+    function gup(url, name) {
+        namename = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regexS = "[\\#&]" + name + "=([^&#]*)";
+        var regex = new RegExp(regexS);
+        var results = regex.exec(url);
+        if (results == null)
+            return "";
+        else
+            return results[1];
+    }
+
+    function validateToken(token) {
+
+        getUserInfo();
+        $.ajax(
+
+            {
+
+                url: VALIDURL + token,
+                data: null,
+                success: function (responseText) {
+
+
+                },
+
+            });
+
+    }
+    function getUserInfo() {
+        $.ajax({
+
+            url: 'https://www.googleapis.com/oauth2/v1/userinfo?access_token=' + acToken,
+            data: null,
+            success: function (resp) {
+                user = resp;
+                console.log(user);
+                AddUser();
+            }
+
+
+        });
+
+    }
+    function AddUser() {
+        console.log(user);
+        $.ajax({
+            url: '/User/GoogleLogin/',
+            type: 'post',
+            data: {
+                Username: user.id,
+                TenNguoiDung: user.name,
+                Email: user.email,
+                Hinh: user.picture
+            },
+            success: function (data) {
+                if (data.code == 200) {
+                    location.reload();
+                }
+
+            }
+        });
+    }
+</script>
+
